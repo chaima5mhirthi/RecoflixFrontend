@@ -1,0 +1,121 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--netflix-black);
+    z-index: 100;
+    transition: background-color 0.3s ease;
+}
+
+.navbar.scrolled {
+    background-color: var(--netflix-black);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--netflix-red);
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: var(--netflix-white);
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--netflix-gray);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    background-color: transparent;
+    transition: all 0.3s;
+}
+
+.search-container.visible {
+    border: 1px solid var(--netflix-white);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+}
+
+.search-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.search-container input {
+    width: 0;
+    border: none;
+    background: transparent;
+    color: var(--netflix-white);
+    transition: width 0.3s;
+    padding: 0;
+}
+
+.search-container.visible input {
+    width: 200px;
+    padding: 5px 10px;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.username {
+    font-size: 14px;
+}
+
+.logout-btn {
+    background-color: var(--netflix-red);
+    color: var(--netflix-white);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c40812;
+}
+
+.login-link {
+    background-color: var(--netflix-red);
+    color: var(--netflix-white);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.login-link:hover {
+    background-color: #c40812;
+}

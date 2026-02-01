@@ -1,0 +1,62 @@
+.browse-page {
+    min-height: 100vh;
+    background-color: var(--netflix-black);
+}
+
+.browse-content {
+    padding: 100px 50px 50px;
+}
+
+.browse-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: var(--netflix-white);
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: var(--netflix-gray);
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.movie-card {
+    cursor: pointer;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.movie-info {
+    margin-top: 10px;
+}
+
+.movie-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: var(--netflix-white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rating {
+    font-size: 14px;
+    color: var(--netflix-gray);
+}

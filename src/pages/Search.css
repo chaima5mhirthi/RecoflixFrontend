@@ -1,0 +1,39 @@
+.search-page {
+    min-height: 100vh;
+    background-color: var(--netflix-black);
+}
+
+.search-content {
+    padding: 100px 50px 50px;
+}
+
+.search-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: var(--netflix-white);
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: var(--netflix-gray);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.recommendations-container {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.recommendations-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: var(--netflix-white);
+}
