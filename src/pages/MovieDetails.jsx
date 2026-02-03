@@ -115,18 +115,20 @@ export default function MovieDetails() {
                     <h1 className="movie-title">{movie.title}</h1>
                     <div className="movie-meta">
                         <span className="rating">⭐ {movie.vote_average}/10</span>
-                        <button
-                            className={`favorite-btn-large ${movie.is_favorite ? 'active' : ''}`}
-                            onClick={handleToggleFavorite}
-                            title={movie.is_favorite ? "Remove from My List" : "Add to My List"}
-                        >
-                            <Heart
-                                size={24}
-                                fill={movie.is_favorite ? "#e50914" : "none"}
-                                color={movie.is_favorite ? "#e50914" : "white"}
-                            />
-                            <span>{movie.is_favorite ? "In My List" : "Add to My List"}</span>
-                        </button>
+                        {user && !user.is_admin && (
+                            <button
+                                className={`favorite-btn-large ${movie.is_favorite ? 'active' : ''}`}
+                                onClick={handleToggleFavorite}
+                                title={movie.is_favorite ? "Remove from My List" : "Add to My List"}
+                            >
+                                <Heart
+                                    size={24}
+                                    fill={movie.is_favorite ? "#e50914" : "none"}
+                                    color={movie.is_favorite ? "#e50914" : "white"}
+                                />
+                                <span>{movie.is_favorite ? "In My List" : "Add to My List"}</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -142,6 +144,9 @@ export default function MovieDetails() {
                         {user ? (
                             (() => {
                                 const userReview = ratings.find(r => r.user_id === user.id);
+                                if (user.is_admin) {
+                                    return <p className="admin-notice">Administrators cannot leave reviews.</p>;
+                                }
                                 return userReview ? (
                                     <div className="your-review-notice">
                                         <div className="notice-header">
@@ -178,7 +183,7 @@ export default function MovieDetails() {
                                                     size={24}
                                                     fill={star <= userRating ? "#ffc107" : "none"}
                                                     color={star <= userRating ? "#ffc107" : "#666"}
-                                                    onClick={() => setUserRating(star)}
+                                                    onClick={() => setUserRating(star * 2)}
                                                     style={{ cursor: 'pointer' }}
                                                 />
                                             ))}
@@ -290,15 +295,17 @@ export default function MovieDetails() {
                             return (
                                 <div key={rid} className="movie-card" onClick={() => navigate(`/movie/${rid}`)}>
                                     <img src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'} alt={movie.title} />
-                                    <button
-                                        className={`card-heart ${isFav ? 'active' : ''}`}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            toggleFavorite(movie);
-                                        }}
-                                    >
-                                        <Heart size={20} fill={isFav ? "#e50914" : "none"} />
-                                    </button>
+                                    {user && !user.is_admin && (
+                                        <button
+                                            className={`card-heart ${isFav ? 'active' : ''}`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleFavorite(movie);
+                                            }}
+                                        >
+                                            <Heart size={20} fill={isFav ? "#e50914" : "none"} />
+                                        </button>
+                                    )}
                                     <div className="movie-overlay">
                                         <h3>{movie.title}</h3>
                                         <div className="meta">

@@ -17,10 +17,9 @@ export default function Browse() {
             setLoading(true);
             try {
                 const movieDataRaw = await movieService.getHomeData();
-                // Personalized home returns a single list of movies (unified search results + recommendations)
                 const movieData = Array.isArray(movieDataRaw)
                     ? movieDataRaw
-                    : (movieDataRaw.recommendations || movieDataRaw.results || []);
+                    : (movieDataRaw?.recommendations || movieDataRaw?.results || []);
                 setMovies(movieData);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -65,12 +64,14 @@ export default function Browse() {
                                         src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
                                         alt={movie.title}
                                     />
-                                    <button
-                                        className={`card-heart ${isFav ? 'active' : ''}`}
-                                        onClick={(e) => handleToggleFavorite(e, movie)}
-                                    >
-                                        <Heart size={20} fill={isFav ? "#e50914" : "none"} />
-                                    </button>
+                                    {user && !user.is_admin && (
+                                        <button
+                                            className={`card-heart ${isFav ? 'active' : ''}`}
+                                            onClick={(e) => handleToggleFavorite(e, movie)}
+                                        >
+                                            <Heart size={20} fill={isFav ? "#e50914" : "none"} />
+                                        </button>
+                                    )}
                                     <div className="movie-overlay">
                                         <h3>{movie.title}</h3>
                                         <div className="meta">

@@ -5,7 +5,7 @@ import MovieDetails from './pages/MovieDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
-import Admin from './pages/Admin';
+import AdminDashboard from './pages/AdminDashboard';
 import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import { AuthProvider } from './context/AuthContext';
@@ -24,7 +24,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </Router>
     </AuthProvider>

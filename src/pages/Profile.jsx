@@ -20,6 +20,11 @@ export default function Profile() {
             return;
         }
 
+        if (user?.is_admin) {
+            navigate('/admin');
+            return;
+        }
+
         const fetchProfileData = async () => {
             if (!user) return;
             try {

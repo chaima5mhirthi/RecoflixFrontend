@@ -19,6 +19,11 @@ export default function Favorites() {
             return;
         }
 
+        if (user?.is_admin) {
+            navigate('/admin');
+            return;
+        }
+
         const fetchFavoritesAndRecs = async () => {
             if (!user) return;
             try {

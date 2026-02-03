@@ -58,27 +58,29 @@ export default function Navbar() {
                 <Link to="/" className="logo">RECOFLIX</Link>
                 <ul className="nav-links">
                     <li><Link to="/">Home</Link></li>
-                    {user && <li><Link to="/favorites">My List</Link></li>}
-                    {user && <li><Link to="/profile">Profile</Link></li>}
+                    {user && !user.is_admin && <li><Link to="/favorites">My List</Link></li>}
+                    {user && !user.is_admin && <li><Link to="/profile">Profile</Link></li>}
                     {user?.is_admin && <li><Link to="/admin">Admin</Link></li>}
                 </ul>
             </div>
             <div className="navbar-right">
-                <div className={`search-container ${isSearchVisible ? 'visible' : ''}`}>
-                    <form onSubmit={handleSearchSubmit}>
-                        <SearchIcon
-                            className="search-icon"
-                            onClick={() => setIsSearchVisible(!isSearchVisible)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Search movies..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            autoFocus={isSearchVisible}
-                        />
-                    </form>
-                </div>
+                {location.pathname !== '/login' && location.pathname !== '/register' && (
+                    <div className={`search-container ${isSearchVisible ? 'visible' : ''}`}>
+                        <form onSubmit={handleSearchSubmit}>
+                            <SearchIcon
+                                className="search-icon"
+                                onClick={() => setIsSearchVisible(!isSearchVisible)}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Search movies..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                autoFocus={isSearchVisible}
+                            />
+                        </form>
+                    </div>
+                )}
                 {user ? (
                     <div className="user-menu">
                         <Link to="/profile" className="username" title={user.email}>
