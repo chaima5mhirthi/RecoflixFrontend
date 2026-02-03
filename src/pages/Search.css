@@ -20,20 +20,21 @@
     color: var(--netflix-gray);
 }
 
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+/* Use global index.css for grid and cards */
+.movie-info {
+    padding: 15px;
 }
 
-.recommendations-container {
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.recommendations-title {
-    font-size: 24px;
-    margin-bottom: 25px;
+.movie-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
     color: var(--netflix-white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rating {
+    font-size: 14px;
+    color: var(--netflix-gray);
 }

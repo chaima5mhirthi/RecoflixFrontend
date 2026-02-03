@@ -1,9 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 :root {
   --netflix-black: #141414;
   --netflix-red: #e50914;
@@ -12,11 +6,18 @@
   --netflix-dark-gray: #2f2f2f;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: var(--netflix-black);
   color: var(--netflix-white);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 #root {
@@ -56,4 +57,129 @@ a {
 input {
   font-family: inherit;
   outline: none;
+}
+
+/* LARGE GRID SYSTEM */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 25px 4%;
+}
+
+.movie-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  aspect-ratio: 4/5;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.movie-card:hover {
+  transform: scale(1.04);
+  z-index: 10;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  /* Let clicks pass to card */
+}
+
+.movie-card:hover .movie-overlay {
+  opacity: 1;
+}
+
+.movie-overlay h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.movie-overlay .meta {
+  display: flex;
+  align-items: center;
+}
+
+.movie-overlay .rating {
+  color: #46d369;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.card-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.card-heart:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.card-heart.active {
+  color: #e50914;
+}
+
+.card-heart svg {
+  transition: fill 0.2s;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin: 40px 4% 0;
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--netflix-red);
+  font-weight: bold;
+  letter-spacing: 4px;
 }

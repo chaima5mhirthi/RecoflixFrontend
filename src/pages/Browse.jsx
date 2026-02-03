@@ -1,63 +1,88 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import { movieService } from '../services/api';
 import './Browse.css';
 
 export default function Browse() {
+    const { user, favorites, toggleFavorite } = useAuth();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchMovies = async () => {
+        const fetchData = async () => {
+            setLoading(true);
             try {
-                // Use the new home endpoint which requires authentication
-                const data = await movieService.getHomeData();
-                // The backend returns { count: ..., recommendations: [...] }
-                setMovies(data.recommendations || []);
+                const movieDataRaw = await movieService.getHomeData();
+                // Personalized home returns a single list of movies (unified search results + recommendations)
+                const movieData = Array.isArray(movieDataRaw)
+                    ? movieDataRaw
+                    : (movieDataRaw.recommendations || movieDataRaw.results || []);
+                setMovies(movieData);
             } catch (error) {
-                console.error('Error fetching movies:', error);
+                console.error('Error fetching data:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchMovies();
+        fetchData();
     }, []);
 
     const handleMovieClick = (movieId) => {
         navigate(`/movie/${movieId}`);
     };
 
+    const handleToggleFavorite = async (e, movie) => {
+        e.stopPropagation();
+        const success = await toggleFavorite(movie);
+        if (!success && !user) {
+            navigate('/login');
+        }
+    };
+
     return (
         <div className="browse-page">
             <Navbar />
-            <div className="browse-content">
-                {loading ? (
-                    <div className="loading">Loading movies...</div>
-                ) : (
+            {loading ? (
+                <div className="loading-screen">RECOFLIX</div>
+            ) : (
+                <div className="browse-content" style={{ paddingTop: '70px' }}>
                     <div className="movies-grid">
-                        {movies.map((movie) => (
-                            <div
-                                key={movie.movie_id}
-                                className="movie-card"
-                                onClick={() => handleMovieClick(movie.movie_id)}
-                            >
-                                <img
-                                    src={movie.poster || 'https://via.placeholder.com/300x450?text=No+Poster'}
-                                    alt={movie.title}
-                                    className="movie-poster"
-                                />
-                                <div className="movie-info">
-                                    <h3>{movie.title}</h3>
-                                    <span className="rating">⭐ {movie.vote_average}/10</span>
+                        {movies.slice(0, 20).map((movie) => {
+                            const id = movie.movie_id || movie.id;
+                            const isFav = favorites.includes(String(id));
+                            return (
+                                <div
+                                    key={id}
+                                    className="movie-card"
+                                    onClick={() => handleMovieClick(id)}
+                                >
+                                    <img
+                                        src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
+                                        alt={movie.title}
+                                    />
+                                    <button
+                                        className={`card-heart ${isFav ? 'active' : ''}`}
+                                        onClick={(e) => handleToggleFavorite(e, movie)}
+                                    >
+                                        <Heart size={20} fill={isFav ? "#e50914" : "none"} />
+                                    </button>
+                                    <div className="movie-overlay">
+                                        <h3>{movie.title}</h3>
+                                        <div className="meta">
+                                            <span className="rating">⭐ {movie.vote_average}/10</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }

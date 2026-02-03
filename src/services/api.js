@@ -38,6 +38,12 @@ export const movieService = {
         const response = await api.get('/movies/home');
         return response.data;
     },
+
+    // Get recommendations for a movie
+    getRecommendationsByMovieId: async (id) => {
+        const response = await api.get(`/movies/${id}/recommendations`);
+        return response.data;
+    },
 };
 
 // Auth Service - For user authentication
@@ -50,13 +56,8 @@ export const authService = {
 
     // Login user
     login: async (credentials) => {
-        const params = new URLSearchParams();
-        params.append('username', credentials.username);
-        params.append('password', credentials.password);
-
-        const response = await api.post('/auth/login', params, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        });
+        // Now sending credentials directly as JSON
+        const response = await api.post('/auth/login', credentials);
 
         if (response.data.access_token) {
             localStorage.setItem('token', response.data.access_token);
@@ -70,7 +71,8 @@ export const authService = {
         if (!token) return null;
 
         try {
-            const response = await api.get('/auth/me');
+            // Passing token as query parameter as required by backend
+            const response = await api.get(`/auth/me?token=${token}`);
             return response.data;
         } catch (error) {
             localStorage.removeItem('token');
@@ -84,23 +86,46 @@ export const authService = {
     },
 };
 
-// Interaction Service - For authenticated users only
+// Interaction Service - For user-specific interactions like favorites and ratings
 export const interactionService = {
     // Get user favorites
     getFavorites: async () => {
-        const response = await api.get('/favorites');
-        return response.data;
+        try {
+            const response = await api.get('/favorites/'); // Trailing slash as requested
+            return response.data.favorites || (Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+            console.error('Error fetching favorites:', error);
+            return [];
+        }
     },
 
-    // Add favorite
+    // Add favorite - Query parameter as requested
     addFavorite: async (movieId) => {
-        const response = await api.post('/favorites', { movie_id: movieId });
+        const response = await api.post(`/favorites?movie_id=${movieId}`, {});
         return response.data;
     },
 
-    // Remove favorite
+    // Remove favorite - Path parameter as requested
     removeFavorite: async (movieId) => {
         const response = await api.delete(`/favorites/${movieId}`);
+        return response.data;
+    },
+
+    // Add rating
+    addRating: async (ratingData) => {
+        const response = await api.post('/ratings', ratingData);
+        return response.data;
+    },
+
+    // Get ratings for a movie
+    getRatingsByMovie: async (movieId) => {
+        const response = await api.get(`/ratings/movie/${movieId}`);
+        return response.data;
+    },
+
+    // Get user ratings
+    getRatingsByUser: async () => {
+        const response = await api.get('/ratings/user');
         return response.data;
     },
 };

@@ -1,62 +1,134 @@
+:root {
+    --netflix-red: #e50914;
+    --netflix-black: #141414;
+    --netflix-white: #ffffff;
+    --netflix-gray: #808080;
+    --netflix-dark-gray: #333333;
+}
+
 .browse-page {
     min-height: 100vh;
     background-color: var(--netflix-black);
+    color: white;
+    overflow-x: hidden;
 }
 
-.browse-content {
-    padding: 100px 50px 50px;
-}
-
-.browse-title {
-    font-size: 32px;
-    margin-bottom: 30px;
-    color: var(--netflix-white);
-}
-
-.loading {
-    text-align: center;
-    padding: 50px;
-    font-size: 18px;
-    color: var(--netflix-gray);
-}
-
-.movies-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.movie-card {
+.hero-section {
+    height: 85vh;
+    background-size: cover;
+    background-position: center 20%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 4%;
     cursor: pointer;
-    transition: transform 0.3s;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(to top, var(--netflix-black) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 800px;
+    z-index: 2;
     position: relative;
 }
 
-.movie-card:hover {
-    transform: scale(1.05);
+.hero-title {
+    font-size: 80px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 20px;
+    line-height: 0.9;
+    text-transform: uppercase;
 }
 
-.movie-poster {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
+.hero-meta {
+    font-size: 24px;
+    color: #46d369;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 15px;
+}
+
+.play-btn {
+    background-color: white;
+    color: black;
+    padding: 12px 35px;
+    border: none;
     border-radius: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.2s;
 }
 
-.movie-info {
-    margin-top: 10px;
+.list-btn {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.movie-info h3 {
-    font-size: 16px;
-    margin-bottom: 5px;
-    color: var(--netflix-white);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.play-btn:hover {
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
-.rating {
-    font-size: 14px;
-    color: var(--netflix-gray);
+.list-btn:hover {
+    background-color: rgba(109, 109, 110, 0.4);
+}
+
+.browse-content {
+    padding: 0 4% 50px;
+    position: relative;
+    z-index: 3;
+}
+
+.category-row {
+    margin-bottom: 50px;
+}
+
+.row-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #e5e5e5;
+    margin-bottom: 20px;
+    transition: color 0.3s;
+}
+
+.row-title:hover {
+    color: white;
+    cursor: pointer;
+}
+
+/* Page specific layout only */
+.loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--netflix-red);
+    font-weight: bold;
+    letter-spacing: 4px;
 }

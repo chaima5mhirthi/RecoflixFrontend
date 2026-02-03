@@ -37,6 +37,7 @@
 .nav-links a {
     color: var(--netflix-white);
     font-size: 14px;
+    text-decoration: none;
     transition: color 0.3s;
 }
 

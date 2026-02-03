@@ -13,27 +13,21 @@
     padding: 50px;
 }
 
-.back-button {
+.movie-banner::after {
+    content: '';
     position: absolute;
-    top: 100px;
-    left: 50px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: var(--netflix-white);
-    padding: 10px 20px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.back-button:hover {
-    background-color: rgba(0, 0, 0, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, #141414, transparent);
+    pointer-events: none;
 }
 
 .movie-details-content {
     max-width: 800px;
+    z-index: 2;
+    position: relative;
 }
 
 .movie-title {
@@ -51,6 +45,33 @@
 
 .rating {
     color: var(--netflix-white);
+}
+
+.favorite-btn-large {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--netflix-white);
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.favorite-btn-large:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.favorite-btn-large.active {
+    border-color: var(--netflix-red);
+}
+
+.favorite-btn-large.active span {
+    color: var(--netflix-red);
 }
 
 .movie-info-section {
@@ -118,6 +139,157 @@
     color: var(--netflix-white);
     display: block;
     margin-bottom: 5px;
+}
+
+.ratings-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rating-form {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.rating-form h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.rating-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.rating-form textarea {
+    width: 100%;
+    min-height: 100px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.rating-form button {
+    background-color: var(--netflix-red);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.rating-form button:hover:not(:disabled) {
+    background-color: #f40612;
+}
+
+.rating-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: var(--netflix-red);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.login-prompt {
+    color: var(--netflix-gray);
+    margin-bottom: 30px;
+}
+
+.login-prompt span {
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.no-reviews {
+    color: var(--netflix-gray);
+    font-style: italic;
+}
+
+.your-review-notice {
+    margin-bottom: 40px;
+}
+
+.notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.info-tag {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--netflix-gray);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.rating-card {
+    background-color: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rating-card.highlighted {
+    border: 1px solid var(--netflix-red);
+    background-color: rgba(229, 9, 20, 0.05);
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.username {
+    font-weight: 600;
+    color: white;
+    font-size: 15px;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.date {
+    font-size: 12px;
+    color: var(--netflix-gray);
+}
+
+.comment {
+    color: var(--netflix-white);
+    line-height: 1.6;
+    font-size: 14px;
 }
 
 .loading,

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search as SearchIcon } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
-export default function Navbar({ user = null, onLogout }) {
+export default function Navbar() {
+    const { user, logout } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -38,6 +40,11 @@ export default function Navbar({ user = null, onLogout }) {
         return () => clearTimeout(timer);
     }, [searchQuery, navigate, location]);
 
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
@@ -50,7 +57,9 @@ export default function Navbar({ user = null, onLogout }) {
             <div className="navbar-left">
                 <Link to="/" className="logo">RECOFLIX</Link>
                 <ul className="nav-links">
-                    {user && <li><Link to="/home">Home</Link></li>}
+                    <li><Link to="/">Home</Link></li>
+                    {user && <li><Link to="/favorites">My List</Link></li>}
+                    {user && <li><Link to="/profile">Profile</Link></li>}
                     {user?.is_admin && <li><Link to="/admin">Admin</Link></li>}
                 </ul>
             </div>
@@ -72,8 +81,10 @@ export default function Navbar({ user = null, onLogout }) {
                 </div>
                 {user ? (
                     <div className="user-menu">
-                        <span className="username">{user.username}</span>
-                        <button onClick={onLogout} className="logout-btn">Logout</button>
+                        <Link to="/profile" className="username" title={user.email}>
+                            {user.username}
+                        </Link>
+                        <button onClick={handleLogout} className="logout-btn">Logout</button>
                     </div>
                 ) : (
                     <Link to="/login" className="login-link">Sign In</Link>
