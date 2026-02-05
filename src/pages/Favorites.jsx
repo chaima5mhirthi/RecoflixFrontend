@@ -76,12 +76,14 @@ export default function Favorites() {
                                                 src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
                                                 alt={movie.title}
                                             />
-                                            <button
-                                                className="card-heart active"
-                                                onClick={(e) => handleToggleFavorite(e, movie)}
-                                            >
-                                                <Heart size={20} fill="#e50914" color="#e50914" />
-                                            </button>
+                                            {!user?.is_admin && (
+                                                <button
+                                                    className="card-heart active"
+                                                    onClick={(e) => handleToggleFavorite(e, movie)}
+                                                >
+                                                    <Heart size={20} fill="#e50914" color="#e50914" />
+                                                </button>
+                                            )}
                                             <div className="movie-overlay">
                                                 <h3>{movie.title}</h3>
                                                 <div className="meta">
@@ -116,19 +118,21 @@ export default function Favorites() {
                                                     src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
                                                     alt={movie.title}
                                                 />
-                                                <button
-                                                    className={`card-heart ${isFav ? 'active' : ''}`}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        toggleFavorite(movie);
-                                                    }}
-                                                >
-                                                    <Heart
-                                                        size={20}
-                                                        fill={isFav ? "#e50914" : "none"}
-                                                        color={isFav ? "#e50914" : "white"}
-                                                    />
-                                                </button>
+                                                {!user?.is_admin && (
+                                                    <button
+                                                        className={`card-heart ${isFav ? 'active' : ''}`}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            toggleFavorite(movie);
+                                                        }}
+                                                    >
+                                                        <Heart
+                                                            size={20}
+                                                            fill={isFav ? "#e50914" : "none"}
+                                                            color={isFav ? "#e50914" : "white"}
+                                                        />
+                                                    </button>
+                                                )}
                                                 <div className="movie-overlay">
                                                     <h3>{movie.title}</h3>
                                                     <div className="meta">

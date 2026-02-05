@@ -64,8 +64,8 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className="navbar-right">
-                {location.pathname === '/' && (
-                    <div className={`search-container ${isSearchVisible ? 'visible' : ''}`}>
+                {!['/login', '/register'].includes(location.pathname) && (
+                    <div className={`search-container ${isSearchVisible ? 'visible' : 'visible'}`}>
                         <form onSubmit={handleSearchSubmit}>
                             <SearchIcon
                                 className="search-icon"

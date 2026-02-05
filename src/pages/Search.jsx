@@ -67,12 +67,14 @@ export default function Search() {
                                         src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
                                         alt={movie.title}
                                     />
-                                    <button
-                                        className={`card-heart ${isFav ? 'active' : ''}`}
-                                        onClick={(e) => handleToggleFavorite(e, movie)}
-                                    >
-                                        <Heart size={20} fill={isFav ? "#e50914" : "none"} />
-                                    </button>
+                                    {!user?.is_admin && (
+                                        <button
+                                            className={`card-heart ${isFav ? 'active' : ''}`}
+                                            onClick={(e) => handleToggleFavorite(e, movie)}
+                                        >
+                                            <Heart size={20} fill={isFav ? "#e50914" : "none"} />
+                                        </button>
+                                    )}
                                     <div className="movie-overlay">
                                         <h3>{movie.title}</h3>
                                         <div className="meta">

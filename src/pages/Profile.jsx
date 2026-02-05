@@ -180,62 +180,66 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="detail-card stats-card">
-                        <h3>Activity</h3>
-                        <div className="stat-item">
-                            <Heart size={20} className="stat-icon" fill="#e50914" color="#e50914" />
-                            <div className="stat-info">
-                                <span className="stat-value">{favorites.length}</span>
-                                <span className="stat-label">Movies Liked</span>
+                    {!user?.is_admin && (
+                        <div className="detail-card stats-card">
+                            <h3>Activity</h3>
+                            <div className="stat-item">
+                                <Heart size={20} className="stat-icon" fill="#e50914" color="#e50914" />
+                                <div className="stat-info">
+                                    <span className="stat-value">{favorites.length}</span>
+                                    <span className="stat-label">Movies Liked</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="profile-favorites-section">
-                    <h2>My Favorite Movies</h2>
-                    {favorites.length === 0 ? (
-                        <div className="no-favorites">
-                            <p>You haven't added any movies to your list yet.</p>
-                            <button onClick={() => navigate('/')} className="browse-btn">Browse Movies</button>
-                        </div>
-                    ) : (
-                        <div className="favorites-grid">
-                            {favorites.map((movie) => {
-                                const id = movie.movie_id || movie.id;
-                                return (
-                                    <div
-                                        key={id}
-                                        className="movie-card"
-                                        onClick={() => handleMovieClick(id)}
-                                    >
-                                        <img
-                                            src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
-                                            alt={movie.title}
-                                            className="movie-poster"
-                                        />
-                                        <button
-                                            className="favorite-btn active"
-                                            onClick={(e) => handleToggleFavorite(e, movie)}
-                                        >
-                                            <Heart
-                                                size={20}
-                                                fill="#e50914"
-                                                color="#e50914"
-                                            />
-                                        </button>
-                                        <div className="movie-info">
-                                            <h3>{movie.title}</h3>
-                                            <div className="movie-meta">
-                                                <span className="rating">⭐ {movie.vote_average}/10</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
                         </div>
                     )}
                 </div>
+
+                {!user?.is_admin && (
+                    <div className="profile-favorites-section">
+                        <h2>My Favorite Movies</h2>
+                        {favorites.length === 0 ? (
+                            <div className="no-favorites">
+                                <p>You haven't added any movies to your list yet.</p>
+                                <button onClick={() => navigate('/')} className="browse-btn">Browse Movies</button>
+                            </div>
+                        ) : (
+                            <div className="favorites-grid">
+                                {favorites.map((movie) => {
+                                    const id = movie.movie_id || movie.id;
+                                    return (
+                                        <div
+                                            key={id}
+                                            className="movie-card"
+                                            onClick={() => handleMovieClick(id)}
+                                        >
+                                            <img
+                                                src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'}
+                                                alt={movie.title}
+                                                className="movie-poster"
+                                            />
+                                            <button
+                                                className="favorite-btn active"
+                                                onClick={(e) => handleToggleFavorite(e, movie)}
+                                            >
+                                                <Heart
+                                                    size={20}
+                                                    fill="#e50914"
+                                                    color="#e50914"
+                                                />
+                                            </button>
+                                            <div className="movie-info">
+                                                <h3>{movie.title}</h3>
+                                                <div className="movie-meta">
+                                                    <span className="rating">⭐ {movie.vote_average}/10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {recommendations.length > 0 && topRatedMovie && (
                     <div className="profile-recommendations" style={{ marginTop: '40px' }}>
@@ -246,15 +250,17 @@ export default function Profile() {
                                 return (
                                     <div key={rid} className="movie-card" onClick={() => navigate(`/movie/${rid}`)}>
                                         <img src={movie.poster || 'https://via.placeholder.com/300x375?text=No+Poster'} alt={movie.title} />
-                                        <button
-                                            className={`card-heart ${isFav ? 'active' : ''}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleFavorite(movie);
-                                            }}
-                                        >
-                                            <Heart size={20} fill={isFav ? "#e50914" : "none"} />
-                                        </button>
+                                        {!user?.is_admin && (
+                                            <button
+                                                className={`card-heart ${isFav ? 'active' : ''}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleFavorite(movie);
+                                                }}
+                                            >
+                                                <Heart size={20} fill={isFav ? "#e50914" : "none"} />
+                                            </button>
+                                        )}
                                         <div className="movie-overlay">
                                             <h3>{movie.title}</h3>
                                             <div className="meta">
