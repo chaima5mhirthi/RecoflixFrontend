@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 export default function Login() {
-    const { login } = useAuth();
+    const { login, user, loading: authLoading } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -15,6 +15,12 @@ export default function Login() {
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState(location.state?.message || '');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user && !authLoading) {
+            navigate('/');
+        }
+    }, [user, authLoading, navigate]);
 
     const handleChange = (e) => {
         setFormData({

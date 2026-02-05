@@ -65,6 +65,13 @@ export const authService = {
         return response.data;
     },
 
+    // Update user profile
+    updateProfile: async (userData) => {
+        const token = localStorage.getItem('token');
+        const response = await api.patch(`/auth/me?token=${token}`, userData);
+        return response.data;
+    },
+
     // Get current user
     getCurrentUser: async () => {
         const token = localStorage.getItem('token');
@@ -123,11 +130,7 @@ export const interactionService = {
         return response.data;
     },
 
-    // Get user ratings
-    getRatingsByUser: async () => {
-        const response = await api.get('/ratings/user');
-        return response.data;
-    },
+
 };
 
 // Admin Service - For admin users only
@@ -135,6 +138,32 @@ export const adminService = {
     // Get all users
     getAllUsers: async () => {
         const response = await api.get('/admin/users');
+        return response.data;
+    },
+
+    // Dashboard endpoints
+    getKPI: async () => {
+        const response = await api.get('/stats/kpi');
+        return response.data;
+    },
+    getRatingsOverTime: async () => {
+        const response = await api.get('/stats/ratings-over-time');
+        return response.data;
+    },
+    getRatingsByGenre: async () => {
+        const response = await api.get('/stats/ratings-by-genre');
+        return response.data;
+    },
+    getTopMovies: async () => {
+        const response = await api.get('/stats/top-movies');
+        return response.data;
+    },
+    getRecentActivity: async () => {
+        const response = await api.get('/stats/activity');
+        return response.data;
+    },
+    getUserGrowth: async () => {
+        const response = await api.get('/stats/user-growth');
         return response.data;
     },
 

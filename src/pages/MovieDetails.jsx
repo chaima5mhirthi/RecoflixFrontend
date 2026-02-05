@@ -88,7 +88,9 @@ export default function MovieDetails() {
         return (
             <div className="movie-details-page">
                 <Navbar />
-                <div className="loading">Loading movie details...</div>
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                </div>
             </div>
         );
     }
@@ -114,18 +116,18 @@ export default function MovieDetails() {
                 <div className="movie-details-content">
                     <h1 className="movie-title">{movie.title}</h1>
                     <div className="movie-meta">
-                        <span className="rating">⭐ {movie.vote_average}/10</span>
+                        <span className="rating">{movie.vote_average} ⭐</span>
                         <button
-                            className={`favorite-btn-large ${movie.is_favorite ? 'active' : ''}`}
+                            className={`favorite-btn-large ${favorites.includes(id) ? 'active' : ''}`}
                             onClick={handleToggleFavorite}
-                            title={movie.is_favorite ? "Remove from My List" : "Add to My List"}
+                            title={favorites.includes(id) ? "Remove from My List" : "Add to My List"}
                         >
                             <Heart
                                 size={24}
-                                fill={movie.is_favorite ? "#e50914" : "none"}
-                                color={movie.is_favorite ? "#e50914" : "white"}
+                                fill={favorites.includes(id) ? "#e50914" : "none"}
+                                color={favorites.includes(id) ? "#e50914" : "white"}
                             />
-                            <span>{movie.is_favorite ? "In My List" : "Add to My List"}</span>
+                            <span>{favorites.includes(id) ? "In My List" : "Add to My List"}</span>
                         </button>
                     </div>
                 </div>
@@ -135,7 +137,21 @@ export default function MovieDetails() {
                 <div className="info-left">
                     <h2>Overview</h2>
                     <p className="overview">{movie.overview || 'No overview available'}</p>
-
+                    {movie.keywords && (
+                        <div className="keywords-section">
+                            <h3>Keywords</h3>
+                            <div className="keywords">
+                                {(Array.isArray(movie.keywords)
+                                    ? movie.keywords
+                                    : typeof movie.keywords === 'string'
+                                        ? movie.keywords.split(',').map(k => k.trim())
+                                        : []
+                                ).slice(0, 15).map((keyword, index) => (
+                                    <span key={index} className="keyword-tag">{keyword}</span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                     <div className="ratings-section">
                         <h2>User Reviews ({ratings.length})</h2>
 
@@ -228,21 +244,7 @@ export default function MovieDetails() {
                         </div>
                     </div>
 
-                    {movie.keywords && (
-                        <div className="keywords-section">
-                            <h3>Keywords</h3>
-                            <div className="keywords">
-                                {(Array.isArray(movie.keywords)
-                                    ? movie.keywords
-                                    : typeof movie.keywords === 'string'
-                                        ? movie.keywords.split(',').map(k => k.trim())
-                                        : []
-                                ).slice(0, 15).map((keyword, index) => (
-                                    <span key={index} className="keyword-tag">{keyword}</span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+
                 </div>
                 <div className="info-right">
                     {movie.genres && (
@@ -302,7 +304,7 @@ export default function MovieDetails() {
                                     <div className="movie-overlay">
                                         <h3>{movie.title}</h3>
                                         <div className="meta">
-                                            <span className="rating">⭐ {movie.vote_average}/10</span>
+                                            <span className="rating">⭐ {movie.vote_average}</span>
                                         </div>
                                     </div>
                                 </div>

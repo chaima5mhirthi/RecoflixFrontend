@@ -1,12 +1,38 @@
-// Placeholder pages for admin
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
+import AdminDashboard from './AdminDashboard';
+import UsersAdmin from './UsersAdmin';
+import './admin.css';
 
 export default function Admin() {
+    const [activeTab, setActiveTab] = useState('dashboard');
+
     return (
-        <div style={{ minHeight: '100vh', padding: '100px 50px' }}>
+        <div className="admin-page">
             <Navbar />
-            <h1>Admin Dashboard</h1>
-            <p>Coming in Phase 3...</p>
+
+            {/* Tabs */}
+            <div className="admin-tabs">
+                <button
+                    className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
+                    onClick={() => setActiveTab('dashboard')}
+                >
+                    Dashboard
+                </button>
+
+                <button
+                    className={activeTab === 'users' ? 'tab active' : 'tab'}
+                    onClick={() => setActiveTab('users')}
+                >
+                    User Management
+                </button>
+            </div>
+
+            {/* Content */}
+            <div className="admin-content">
+                {activeTab === 'dashboard' && <AdminDashboard />}
+                {activeTab === 'users' && <UsersAdmin />}
+            </div>
         </div>
     );
 }

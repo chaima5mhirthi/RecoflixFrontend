@@ -25,9 +25,10 @@
 }
 
 .movie-details-content {
-    max-width: 800px;
+    max-width: 100%;
     z-index: 2;
     position: relative;
+    width: 100%;
 }
 
 .movie-title {
@@ -38,6 +39,7 @@
 
 .movie-meta {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
     align-items: center;
     font-size: 18px;
@@ -45,6 +47,11 @@
 
 .rating {
     color: var(--netflix-white);
+}
+
+.movie-meta .rating {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .favorite-btn-large {
@@ -253,9 +260,11 @@
 }
 
 .rating-card.highlighted {
-    border: 1px solid var(--netflix-red);
+    border: 1px solid var(--netflix-white);
     background-color: rgba(229, 9, 20, 0.05);
 }
+
+
 
 .rating-header {
     display: flex;
@@ -298,4 +307,10 @@
     padding: 100px 50px;
     font-size: 18px;
     color: var(--netflix-gray);
+}
+
+/* New style for recommendation rating */
+.movie-overlay .rating {
+    font-size: 20px;
+    font-weight: bold;
 }

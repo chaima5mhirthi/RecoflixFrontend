@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Mail, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
-import { movieService, interactionService } from '../services/api';
+import { movieService, interactionService, authService } from '../services/api';
 import './Profile.css';
 
 export default function Profile() {
@@ -12,6 +12,14 @@ export default function Profile() {
     const [recommendations, setRecommendations] = useState([]);
     const [topRatedMovie, setTopRatedMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState({
+        username: '',
+        email: '',
+        full_name: ''
+    });
+    const [updateError, setUpdateError] = useState('');
+    const [updateSuccess, setUpdateSuccess] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,6 +74,33 @@ export default function Profile() {
         }
     };
 
+    const handleEditClick = () => {
+        setEditForm({
+            username: user.username,
+            email: user.email,
+            full_name: user?.full_name || ''
+        });
+        setIsEditing(true);
+        setUpdateError('');
+        setUpdateSuccess('');
+    };
+
+    const handleUpdateProfile = async (e) => {
+        e.preventDefault();
+        setUpdateError('');
+        setUpdateSuccess('');
+
+        try {
+            await authService.updateProfile(editForm);
+            setUpdateSuccess('Profile updated successfully! Refreshing...');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } catch (err) {
+            setUpdateError(err.response?.data?.detail || 'Failed to update profile');
+        }
+    };
+
     if (loading) {
         return (
             <div className="profile-page">
@@ -86,8 +121,51 @@ export default function Profile() {
                     <div className="profile-info-main">
                         <h1>{user?.full_name || user?.username}</h1>
                         <p className="profile-email"><Mail size={16} /> {user?.email}</p>
+                        <button onClick={handleEditClick} className="edit-profile-btn">Edit Profile</button>
                     </div>
                 </div>
+
+                {isEditing && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h2>Edit Profile</h2>
+                            {updateError && <div className="error-message">{updateError}</div>}
+                            {updateSuccess && <div className="success-message">{updateSuccess}</div>}
+                            <form onSubmit={handleUpdateProfile}>
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input
+                                        type="text"
+                                        value={editForm.username}
+                                        onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Full Name</label>
+                                    <input
+                                        type="text"
+                                        value={editForm.full_name}
+                                        onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        value={editForm.email}
+                                        onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                                        required
+                                    />
+                                </div>
+                                <div className="modal-actions">
+                                    <button type="button" onClick={() => setIsEditing(false)} className="cancel-btn">Cancel</button>
+                                    <button type="submit" className="save-btn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
 
                 <div className="profile-details-grid">
                     <div className="detail-card">
