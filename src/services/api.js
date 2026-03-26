@@ -178,4 +178,16 @@ export const adminService = {
         const response = await api.post(`/admin/users/${id}/demote`, {});
         return response.data;
     },
+
+    // Update user (Admin)
+    updateUser: async (id, userData) => {
+        const response = await api.patch(`/admin/users/${id}`, userData);
+        return response.data;
+    },
+
+    // Delete user
+    deleteUser: async (id) => {
+        const response = await api.delete(`/admin/users/${id}`);
+        return response.data;
+    },
 };

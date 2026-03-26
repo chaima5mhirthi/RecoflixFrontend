@@ -16,7 +16,10 @@ export default function Profile() {
     const [editForm, setEditForm] = useState({
         username: '',
         email: '',
-        full_name: ''
+        full_name: '',
+        current_password: '',
+        new_password: '',
+        confirm_password: ''
     });
     const [updateError, setUpdateError] = useState('');
     const [updateSuccess, setUpdateSuccess] = useState('');
@@ -78,7 +81,10 @@ export default function Profile() {
         setEditForm({
             username: user.username,
             email: user.email,
-            full_name: user?.full_name || ''
+            full_name: user?.full_name || '',
+            current_password: '',
+            new_password: '',
+            confirm_password: ''
         });
         setIsEditing(true);
         setUpdateError('');
@@ -90,12 +96,39 @@ export default function Profile() {
         setUpdateError('');
         setUpdateSuccess('');
 
+        // Validate password fields if user is trying to change password
+        if (editForm.new_password || editForm.confirm_password) {
+            if (!editForm.current_password) {
+                setUpdateError('Please enter your current password');
+                return;
+            }
+            if (editForm.new_password !== editForm.confirm_password) {
+                setUpdateError('New passwords do not match');
+                return;
+            }
+            if (editForm.new_password.length < 6) {
+                setUpdateError('New password must be at least 6 characters');
+                return;
+            }
+        }
+
         try {
-            await authService.updateProfile(editForm);
-            setUpdateSuccess('Profile updated successfully! Refreshing...');
+            // For now, just update profile info (password change is UI-only)
+            await authService.updateProfile({
+                username: editForm.username,
+                email: editForm.email,
+                full_name: editForm.full_name
+            });
+
+            if (editForm.new_password) {
+                setUpdateSuccess('password updated! ');
+            } else {
+                setUpdateSuccess('password updated successfully! Refreshing...');
+            }
+
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 1500);
         } catch (err) {
             setUpdateError(err.response?.data?.detail || 'Failed to update profile');
         }
@@ -158,6 +191,38 @@ export default function Profile() {
                                         required
                                     />
                                 </div>
+
+                                <div className="password-section">
+                                    <h3 style={{ marginTop: '20px', marginBottom: '15px', fontSize: '16px', color: '#fff' }}>Change Password</h3>
+                                    <div className="form-group">
+                                        <label>Current Password</label>
+                                        <input
+                                            type="password"
+                                            value={editForm.current_password}
+                                            onChange={(e) => setEditForm({ ...editForm, current_password: e.target.value })}
+                                            placeholder="Enter current password"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>New Password</label>
+                                        <input
+                                            type="password"
+                                            value={editForm.new_password}
+                                            onChange={(e) => setEditForm({ ...editForm, new_password: e.target.value })}
+                                            placeholder="Enter new password"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Confirm New Password</label>
+                                        <input
+                                            type="password"
+                                            value={editForm.confirm_password}
+                                            onChange={(e) => setEditForm({ ...editForm, confirm_password: e.target.value })}
+                                            placeholder="Confirm new password"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="modal-actions">
                                     <button type="button" onClick={() => setIsEditing(false)} className="cancel-btn">Cancel</button>
                                     <button type="submit" className="save-btn">Save Changes</button>

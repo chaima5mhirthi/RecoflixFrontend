@@ -116,7 +116,7 @@ export default function MovieDetails() {
                 <div className="movie-details-content">
                     <h1 className="movie-title">{movie.title}</h1>
                     <div className="movie-meta">
-                        <span className="rating">{movie.vote_average} ⭐</span>
+                        <span className="rating">{movie.vote_average.toFixed(1)} ⭐</span>
                         {!user?.is_admin && (
                             <button
                                 className={`favorite-btn-large ${favorites.includes(id) ? 'active' : ''}`}
@@ -258,6 +258,11 @@ export default function MovieDetails() {
                                         ? movie.genres
                                         : ''
                             }
+                        </div>
+                    )}
+                    {movie.release_date && (
+                        <div className="info-item">
+                            <strong>Release Date:</strong> {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </div>
                     )}
                     {movie.cast && (
